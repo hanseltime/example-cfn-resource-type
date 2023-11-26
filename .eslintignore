@@ -1,0 +1,4 @@
+# jest html reporters
+**/jest-html-reporters-attach/**/*
+**/.yarn/**/*
+**/node_modules/**/*

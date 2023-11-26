@@ -1,0 +1,47 @@
+{
+  "configurations": [
+    {
+      "name": "Attach to SAM: TestEntrypoint",
+      "port": 9888,
+      "request": "attach",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "remoteRoot": "/var/task/build/TestEntrypoint/dist/",
+      "localRoot": "${workspaceFolder}/dist",
+      "outFiles": [
+        "!**/node_modules/**"
+      ],
+      "type": "node"
+    },
+    {
+      "name": "Attach to SAM: TypeFunction",
+      "port": 9888,
+      "request": "attach",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "remoteRoot": "/var/task/build/TestEntrypoint/dist/",
+      "localRoot": "${workspaceFolder}/dist",
+      "outFiles": [
+        "!**/node_modules/**"
+      ],
+      "type": "node"
+    },
+    // This is for running the local lambda - you need it attached at every request
+    {
+      "name": "Attach to SAM: start-local",
+      "port": 9888,
+      "request": "attach",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "remoteRoot": "/var/task/dist/",
+      "localRoot": "${workspaceFolder}/dist",
+      "outFiles": [
+        "!**/node_modules/**"
+      ],
+      "type": "node"
+    },
+  ]
+}

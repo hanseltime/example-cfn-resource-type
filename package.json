@@ -1,0 +1,59 @@
+{
+    "name": "@hanseltime/test-resource",
+    "version": "0.1.0",
+    "description": "AWS custom resource provider named ExampleTest::Test::Resource.",
+    "private": true,
+    "main": "dist/handlers.js",
+    "files": [
+        "dist",
+        "lambda-bin"
+    ],
+    "repository": "https://github.com/hanseltime/example-cfn-resource-type.git",
+    "scripts": {
+        "build": "yarn es-build",
+        "clean": "rimraf ./dist && rimraf ./build && rimraf ./tmp",
+        "ts-build": "yarn tsc",
+        "es-build": "yarn ts-node src/esbuild.ts",
+        "sam-build": "sam build --debug",
+        "sam-build-docker": "make create-yarn-wrap && yarn sam-build -e IN_DOCKER=true --use-container",
+        "sam-build-docker:debug": "DEBUG_MODE=true yarn build && yarn sam-build-docker -e DEBUG_MODE=true --parameter-overrides BuildType=Debug",
+        "invoke:TestEntrypoint": "sam local invoke TestEntrypoint --parameter-overrides Endpoint=Local",
+        "invoke:TypeFunction": "sam local invoke TypeFunction --parameter-overrides Endpoint=Local",
+        "invoke-for-debug:TestEntrypoint": "sam local invoke TestEntrypoint -d 9888 --parameter-overrides BuildType=Debug Endpoint=Local",
+        "invoke-for-debug:TypeFunction": "sam local invoke TypeFunction -d 9888 --parameter-overrides BuildType=Debug Endpoint=Local",
+        "start-lambda:debug": "yarn start-lambda -d 9888 --parameter-overrides BuildType=Debug Endpoint=Local",
+        "start-lambda": "sam local start-lambda --parameter-overrides Endpoint=Local",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "lint": "eslint .",
+        "generate-model": "cfn generate && yarn eslint ./src/models.ts --fix",
+        "submit:private": "yarn generate-model && cfn submit --set-default"
+    },
+    "dependencies": {
+        "@amazon-web-services-cloudformation/cloudformation-cli-typescript-lib": "^1.0.1",
+        "class-transformer": "0.3.1"
+    },
+    "devDependencies": {
+        "@types/node": "^16.0.0",
+        "@typescript-eslint/eslint-plugin": "^6.12.0",
+        "@typescript-eslint/parser": "^6.12.0",
+        "esbuild": "^0.19.1",
+        "eslint": "^8.54.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-plugin-deprecation": "^2.0.0",
+        "eslint-plugin-prettier": "^5.0.1",
+        "prettier": "^3.1.0",
+        "rimraf": "^5.0.1",
+        "ts-node": "^10.9.1",
+        "typescript": "^4.1.2"
+    },
+    "optionalDependencies": {
+        "aws-sdk": "^2.656.0"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "engines": {
+        "node": ">=18"
+    },
+    "packageManager": "yarn@3.6.0"
+}

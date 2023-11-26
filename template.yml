@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: AWS SAM template for the ExampleTest::Test::Resource resource type
+
+Parameters:
+  BuildType:
+    Type: String
+    Default: Prod
+    AllowedValues:
+      - Prod
+      - Debug
+    Description: This value can be used to determine debug level parameters (like which memory setting out of the memory map to use)
+  Endpoint:
+    Type: String
+    Default: AWS
+    AllowedValues:
+      - Local
+      - AWS
+    Description: when set to Local, this will set up environment variables that should influence local running
+
+Conditions:
+  DebugMode: !Equals 
+    - !Ref BuildType
+    - "Debug"
+  LocalConnect: !Equals
+    - !Ref Endpoint
+    - "Local"
+
+Globals:
+  Function:
+    Timeout: 180  # docker start-up times can be long for SAM CLI
+    # Note - Memory Settings should be about 2x the prod size so we don't run into debugger OOM issues
+    MemorySize: !If
+      - DebugMode
+      - 1024
+      - 512
+    Runtime: provided
+    Environment: 
+      Variables: 
+        LOCALSTACK_URL: !If [ LocalConnect, "host.docker.internal:4566", "" ]
+
+# Note - we use node16 because it use aws-sdk v2, which is part of the current framework
+Resources:
+  TestEntrypoint:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/handlers.testEntrypoint
+      Runtime: nodejs18.x
+      CodeUri: ./
+    Metadata:
+      BuildMethod: makefile
+
+  TypeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/handlers.entrypoint
+      Runtime: nodejs18.x
+      CodeUri: ./
+    Metadata:
+      BuildMethod: makefile

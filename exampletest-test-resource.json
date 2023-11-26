@@ -1,0 +1,62 @@
+{
+    "typeName": "ExampleTest::Test::Resource",
+    "description": "An example resource schema demonstrating some basic constructs and validation rules.",
+    "sourceUrl": "https://github.com/hanseltime/example-cfn-resource-type.git",
+    "definitions": {},
+    "properties": {
+        "Name": {
+            "description": "The SSM parameter name",
+            "type": "string",
+            "minLength": 3
+        },
+        "Value": {
+            "description": "Provide a value that we store",
+            "type": "string",
+            "minLength": 2
+        },
+        "Id": {
+            "description": "The physical resource id",
+            "type": "string"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "Value",
+        "Name"
+    ],
+    "readOnlyProperties": [
+        "/properties/Id"
+    ],
+    "primaryIdentifier": [
+        "/properties/Id"
+    ],
+    "handlers": {
+        "create": {
+            "permissions": [
+                "ssm:PutParameter",
+                "ssm:AddTagsToResource"
+            ]
+        },
+        "read": {
+            "permissions": [
+                "ssm:GetParameter"
+            ]
+        },
+        "update": {
+            "permissions": [
+                "ssm:PutParameter"
+            ]
+        },
+        "delete": {
+            "permissions": [
+                "ssm:DeleteParameter"
+            ]
+        },
+        "list": {
+            "permissions": [
+                "ssm:DescribeParameters",
+                "ssm:ListTagsForResource"
+            ]
+        }
+    }
+}

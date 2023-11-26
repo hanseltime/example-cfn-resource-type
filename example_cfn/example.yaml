@@ -1,0 +1,6 @@
+Resources:
+  TestParam:
+    Type: ExampleTest::Test::Resource
+    Properties:
+      Name: CloudformationTest
+      Value: proven

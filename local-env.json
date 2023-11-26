@@ -1,0 +1,3 @@
+{
+    "LOCALSTACK_URL": "host.docker.internal:4566"
+}
