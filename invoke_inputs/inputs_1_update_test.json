@@ -1,0 +1,24 @@
+{
+    "credentials": {
+        "accessKeyId": "test",
+        "secretAccessKey": "test",
+        "sessionToken": "testSession"
+    },
+    "action": "UPDATE",
+    "request": {
+        "clientRequestToken": "4b90a7e4-b790-456b-a937-0cfdfa211dfe",
+        "desiredResourceState": {
+            "Name": "huh",
+            "Value": "something"
+        },
+        "previousResourceState": {
+            "Id": "test-example::huh",
+            "Name": "huh",
+            "Value": "thing1"
+        },
+        "logicalResourceIdentifier": "MyResource"
+    },
+    "callbackContext": null,
+    "awsAccountId": "123456789012",
+    "region": "us-east-1"
+}

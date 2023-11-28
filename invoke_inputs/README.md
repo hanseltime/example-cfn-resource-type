@@ -1,13 +1,30 @@
 # Invoke Inputs
 
-For local testing and invoking of this function, we can invoke the TestEntrypoint function of the 
-custom resource provider so that we can circumvent some of the other complexities of the request
-payload for the actual handler during testing.
+For local testing and invoking of this function, we can invoke the TestEntrypoint or the TypeFunction
+after having run `yarn sam-build-docker` or its debug variant.
 
-**This is not what cloudformation uses when running `cfn test` and should only be used for storing
-good payloads for local testing via invoke**
+The inputs in this folder represent the 2 different types of inputs that each entrypoing takes.
 
-## Test Event format
+## Requests for the actual TypeFunction entrypoint
+
+If you want to store requests for testing the actual TypeFunction entrypoint, you will want to match the `HandlerRequest`
+type from your `cloudformation-cli-typescript-lib` package.
+
+All json files that are not postfixed with `_test` have the anticipated format for a raw handler request as of the time
+of writing this.  You can come through the requests to get an understanding of the values that you can provide.
+
+Note, the raw payload does not exactly match the typescript named fields for the request by the time that they
+make it to your handler.  This could be cause for confusion.  If you want a simplified payload, you can 
+use the TestEntrypoint instead.
+
+## Using Test Entrypoint
+
+The TestEntrypoint function of the custom resource provider so that we can circumvent some of 
+the other complexities of the request payload for the actual handler during testing.
+
+** All files of the test event format are current denotes with `_test.json`.**
+
+### Test Event format
 
 The Test Event format has a slightly different format then the whole Cloudformation lambda request.
 You can verify this format against the `TestEvent` type definition for your version of the 
@@ -25,7 +42,7 @@ export class TestEvent {
 }
 ```
 
-### Key Differences
+### Key Differences Between TypeFunction
 
 #### Credentials
 
@@ -42,10 +59,3 @@ about the lambda that is running.
 
 For our test runs, in reality, you probably just want to connect both to a test account, so the credentials get
 distributed for both provider and caller sessions of the aws-sdk.
-
-## Requests for the actual TypeFunction entrypoint
-
-If you want to store requests for testing the actual TypeFunction entrypoint, you will want to match the `HandlerRequest`
-type from your `cloudformation-cli-typescript-lib` package.
-
-TODO: setting up that template and how to test that would be pretty sweet if there's a use case for it.

@@ -1,4 +1,37 @@
 {
-    "Value": "something2",
-    "Name": "my-key"
+    "action": "UPDATE",
+    "requestData": {
+        "callerCredentials": {
+            "accessKeyId": "test",
+            "secretAccessKey": "test",
+            "sessionToken": "testSession"
+        },
+        "providerCredentials": {
+            "accessKeyId": "test",
+            "secretAccessKey": "test",
+            "sessionToken": "testSession"
+        },
+        "logicalResourceIdentifier": "MyResource",
+        "resourceProperties": {
+            "Name": "huh",
+            "Value": "something"
+        },
+        "previousResourceProperties": {
+            "Id": "test-example::huh",
+            "Name": "huh",
+            "Value": "thing1"
+        },
+        "stackTags": {},
+        "previousStackTags": {},
+        "systemTags": {}
+    },
+    "awsAccountId": "account_id",
+    "bearerToken": "bearerToken",
+    "region": "us-east-1",
+    "stackId": "stack-calling-this",
+    "resourceType": "ExampleTest::Test::Resource",
+    "callbackContext": null,
+    "nextToken": null,
+    "requestContext": null
 }
+

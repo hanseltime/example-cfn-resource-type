@@ -1,5 +1,5 @@
 {
-    "action": "CREATE",
+    "action": "READ",
     "requestData": {
         "callerCredentials": {
             "accessKeyId": "test",
@@ -13,8 +13,9 @@
         },
         "logicalResourceIdentifier": "MyResource",
         "resourceProperties": {
+            "Id": "test-example::huh",
             "Name": "huh",
-            "Value": "something"
+            "Value": "thing1"
         },
         "previousResourceProperties": null,
         "stackTags": {},
