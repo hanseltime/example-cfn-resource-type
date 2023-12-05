@@ -6,17 +6,20 @@
     "main": "dist/handlers.js",
     "files": [
         "dist",
-        "lambda-bin"
+        "lambda-bin",
+        "docs",
+        "README.md"
     ],
     "repository": "https://github.com/hanseltime/example-cfn-resource-type.git",
     "scripts": {
         "build": "yarn es-build",
         "clean": "rimraf ./dist && rimraf ./build && rimraf ./tmp",
         "ts-build": "yarn tsc",
-        "es-build": "yarn ts-node src/esbuild.ts",
+        "es-build": "yarn ts-node src/tools/esbuild.ts",
         "sam-build": "sam build --debug",
         "sam-build-docker": "make create-yarn-wrap && yarn sam-build -e IN_DOCKER=true --use-container",
         "sam-build-docker:debug": "DEBUG_MODE=true yarn build && yarn sam-build-docker -e DEBUG_MODE=true --parameter-overrides BuildType=Debug",
+        "create-event": "yarn ts-node src/tools/create-event.ts",
         "invoke:TestEntrypoint": "sam local invoke TestEntrypoint --parameter-overrides Endpoint=Local",
         "invoke:TypeFunction": "sam local invoke TypeFunction --parameter-overrides Endpoint=Local",
         "invoke-for-debug:TestEntrypoint": "sam local invoke TestEntrypoint -d 9888 --parameter-overrides BuildType=Debug Endpoint=Local",
@@ -36,6 +39,8 @@
         "@types/node": "^16.0.0",
         "@typescript-eslint/eslint-plugin": "^6.12.0",
         "@typescript-eslint/parser": "^6.12.0",
+        "commander": "^11.1.0",
+        "comment-json": "^4.2.3",
         "esbuild": "^0.19.1",
         "eslint": "^8.54.0",
         "eslint-config-prettier": "^9.0.0",

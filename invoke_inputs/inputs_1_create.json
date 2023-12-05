@@ -1,17 +1,22 @@
 {
     "action": "CREATE",
     "requestData": {
+        // These credentials are used for handler operations in the function entrypoint
+        // You can use your local credentials with yarn create-event --useAwsEnv
         "callerCredentials": {
             "accessKeyId": "test",
             "secretAccessKey": "test",
             "sessionToken": "testSession"
         },
+        // These credentials are used for logging and are not updated as part of default --useAwsEnv
+        // You can change the script behavior if you would like this
         "providerCredentials": {
             "accessKeyId": "test",
             "secretAccessKey": "test",
             "sessionToken": "testSession"
         },
         "logicalResourceIdentifier": "MyResource",
+        // Implement all your fields for create (no identifier fields)
         "resourceProperties": {
             "Name": "huh",
             "Value": "something"

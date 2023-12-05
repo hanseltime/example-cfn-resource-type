@@ -13,6 +13,14 @@ In order to do this we make use of a few tools:
 - Docker
 - localstack for local testing
 
+## Notable warnings
+
+* You can only add .json files into the `inputs` folder.  Any other files will result in strange failures at time of submission like:
+
+```shell
+error converting FileName[file_name] to a valid Json
+```
+
 ## The Cloudformation CLI build process
 
 In all honesty, the cloudformation cli is TOO magic. However, it does do some valuable abstractions
@@ -184,19 +192,25 @@ for environment testing, you can remove the parameter override for your runs.
 
 # Invoking with a payload
 
-In order to test your lambda locally with a single invoke, you can use example_inputs and invoke the created function.  If you are 
+In order to test your lambda locally with a single invoke, you can use invoke and invoke the created function.  If you are 
 just looking to black box run your resource provider, you can simply build and run your production lambda from
-its `TestEntrypoint` or the `TypeFunction` with a more complete response.
+its `TestEntrypoint` with a `_test.json` file or the `TypeFunction` with the more complete non `_test` postfixed json.
 
 To understand payloads for sending, please see the [invoke_inputs Readme](./invoke_inputs/README.md).
+
+Additionally, if you need to add parameterized data (like your AWS terminal creds to test against an environment),
+we provide a `create-event` script that references the [create-event.ts](./src/tools/create-event.ts) typescript file.
+You can augment this file if there are more complex configurable inputs that you'd like to add.
+
+The following is an example invoke pattern:
 
 ```shell
 # Non-debuggable running commands
 # Build the sam function
 yarn sam-build-docker
 
-# Invoke the function
-yarn invoke:TestEntrypoint --event invoke_inputs/inputs_1_create.json
+# Invoke the function with the current terminal creds
+yarn create-event -e invoke_inputs/inputs_1_create_test.json --useAwsEnv | yarn invoke:TestEntrypoint --event -
 ```
 
 The above script abstracts away a lot of functionality.  You can take a look at the actual sam parameters that are being set.
@@ -223,9 +237,10 @@ After you have the server up, with debug points or not, you can run `cfn test` t
 
 ## Local Environment
 
-One of the key things that we bake into the invoke script is the ability to declare local environment variables.  We do this by conditionally providing
-a `Global:Environment:Variables` section in the template.yaml.  You can see with our LOCALSTACK_URL environment variable that we only supply a docker host
-domain in expectation of localstack being up on the same docker daemon.  You can do the same with other environments that you want to set for local runs.
+One of the key things that we bake into the invoke/start-lambda script is the ability to declare local environment variables.  We do this by 
+conditionally providinga `Global:Environment:Variables` section in the template.yaml.  You can see with our LOCALSTACK_URL environment variable 
+that we only supply a docker host domain in expectation of localstack being up on the same docker daemon.  You can do the same with other 
+environments that you want to set for local runs.
 
 Note: you have to build the template if you add a new parameter but then all environment configurations are based off of the `parameter-override` that
 you supply during a sam invoke/start-lambda operation.
@@ -257,8 +272,8 @@ doing a sam cli call:
 Two scripts are provided as base points for tweaking via simple example input invokes:
 
 ```shell
-yarn invoke-for-debug:TestEntrypoint --event example_inputs/inputs_1_create.json
-yarn invoke-for-debug:TypeFunction --event example_inputs/inputs_1_create.json
+yarn create-event -e invoke_inputs/inputs_1_create.json --useAwsEnv | yarn invoke-for-debug:TestEntrypoint --event -
+yarn create-event -e invoke_inputs/inputs_1_create.json --useAwsEnv | yarn invoke-for-debug:TypeFunction --event -
 ```
 
 Keep in mind that the values in the above scripts are the minimum configuration parameters for your lambda function to invoke appropriately.
@@ -306,7 +321,7 @@ yarn start-lambda:debug
 If you do look at the `invoke-for-debug:TestEntrypoint`, you can see that the resultant sam command from above looks like:
 
 ```shell
-sam local invoke TestEntrypoint -d 9888 --parameter-overrides BuildType=Debug Endpoint=Local  --event example_inputs/inputs_1_create.json
+sam local invoke TestEntrypoint -d 9888 --parameter-overrides BuildType=Debug Endpoint=Local --event -
 ```
 
 #### -d parameter

@@ -9,7 +9,7 @@ if (DEBUG_MODE && DEBUG_MODE.toLowerCase() === 'true') {
   debugMode = true
 }
 void build({
-  entryPoints: [resolve(__dirname, 'handlers.ts')],
+  entryPoints: [resolve(__dirname, '..', 'handlers.ts')],
   outdir: 'dist',
   bundle: true,
   loader: { '.ts': 'ts' },

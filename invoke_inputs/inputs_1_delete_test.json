@@ -1,4 +1,6 @@
 {
+    // These credentials are used for both logging and handler operations in the test entrypoint
+    // You can use your local credentials with yarn create-event --useAwsEnv
     "credentials": {
         "accessKeyId": "test",
         "secretAccessKey": "test",
